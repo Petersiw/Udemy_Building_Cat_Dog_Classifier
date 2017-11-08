@@ -13,20 +13,27 @@ from keras.layers import Convolution2D  #2D for images;3D for videos
 from keras.layers import MaxPooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
+from keras.layers import ZeroPadding2D
 
 #Initialising the CNN
 classifier = Sequential()
 
 #Step 1 - Convolution
-classifier.add(Convolution2D(32, (3, 3), input_shape = (128, 128, 3), activation = 'relu')) 
+classifier.add(Convolution2D(32, (3, 3), input_shape = (128, 128, 3), 
+                             activation = 'relu')) 
 #64, 64, 3 for tensorflow 
                              
 #Step 2 - Pooling
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
 #Adding one more convolution layer
-classifier.add(Convolution2D(32, (3, 3), activation = 'relu')) 
+classifier.add(ZeroPadding2D())
+classifier.add(Convolution2D(64, (3, 3), activation = 'relu')) 
+classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
+#One more convolution layer
+classifier.add(ZeroPadding2D())
+classifier.add(Convolution2D(128, (3, 3), activation = 'relu')) 
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
 #Step 3 - Flattening
